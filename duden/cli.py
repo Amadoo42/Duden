@@ -13,33 +13,21 @@ import yaml
 from __version__ import __version__
 from search import get, search
 from display import (display_grammar, display_compounds, print_tree_of_strings,
-                      print_string_or_list, describe_word)
+                     print_string_or_list, describe_word)
 
-conn = sqlite3.connect('cli.sqlite')
+
+conn = sqlite3.connect('words.sqlite')
 cur = conn.cursor()
 
-# Do some setup
+# Create the tables
 cur.executescript('''
-DROP TABLE IF EXISTS words;
-DROP TABLE IF EXISTS grammar;
-DROP TABLE IF EXISTS correction;
+DROP TABLE IF EXISTS Words;
 
-CREATE TABLE words (
-    id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    name   TEXT UNIQUE
-    
-);
-
-CREATE TABLE correction (
-    id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    title  TEXT UNIQUE
-);
-
-CREATE TABLE grammar (
-    id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    title  TEXT UNIQUE
+CREATE TABLE Words (
+    singular_nominativ   TEXT
 )
 ''')
+
 
 def display_word(word, args):
     """
@@ -50,6 +38,9 @@ def display_word(word, args):
         print(word.title)
     elif args.name:
         print(word.name)
+        cur.execute("INSERT INTO Words VALUES ('Katze')")
+        conn.commit()
+        conn.close()
     elif args.article:
         if word.article:
             print(word.article)
@@ -91,6 +82,7 @@ def display_word(word, args):
     else:
         # print the description
         describe_word(word)
+
 
 
 def parse_args():
