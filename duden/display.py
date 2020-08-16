@@ -3,18 +3,28 @@
 Console printing functions
 """
 from string import ascii_lowercase
+import sqlite3
 
 from crayons import white, blue, yellow  # pylint: disable=no-name-in-module
 
+conn = sqlite3.connect('words.sqlite')
+cur = conn.cursor()
 
 def display_grammar(word, grammar_args):
     """
     Display word grammar forms, corresponds to --grammar switch
     """
     grammar_struct = word.grammar_raw
+    singular_nom = grammar_struct[0][1]
+    #str(singular_nom)
     if grammar_struct is None:
         return
-
+    #cur.execute("INSERT INTO Customers (first_name, last_name, email) VALUES (?, ?, ?)",(name, "phone", "email"))
+    cur.execute("INSERT INTO Words (singular_nominativ) VALUES (?)", ([singular_nom]))
+    conn.commit()
+    conn.close()
+    print(grammar_struct[0][1])
+    print("-----------------------------------------")
     grammar_tokens = [token.lower() for token in grammar_args.split(',')]
 
     # filter out grammar forms which do not match provided keys
