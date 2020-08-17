@@ -7,24 +7,35 @@ import sqlite3
 
 from crayons import white, blue, yellow  # pylint: disable=no-name-in-module
 
-conn = sqlite3.connect('words.sqlite')
+conn = sqlite3.connect('Words.sqlite')
 cur = conn.cursor()
+# Delete Records
+#cur.execute("DELETE FROM Words WHERE rowid = 3")
+conn.commit()
 
 def display_grammar(word, grammar_args):
     """
     Display word grammar forms, corresponds to --grammar switch
     """
     grammar_struct = word.grammar_raw
+    wordname = word.title
+    meaningofword = word.meaning_overview[0][0]
     singular_nom = grammar_struct[0][1]
-    #str(singular_nom)
+    plural_nom = grammar_struct[1][1]
+    singular_gen = grammar_struct[2][1]
+    plural_gen = grammar_struct[3][1]
+    singular_dat = grammar_struct[4][1]
+    plural_dat = grammar_struct[5][1]
+    singular_akk = grammar_struct[6][1]
+    plural_akk = grammar_struct[7][1]
     if grammar_struct is None:
         return
-    #cur.execute("INSERT INTO Customers (first_name, last_name, email) VALUES (?, ?, ?)",(name, "phone", "email"))
-    cur.execute("INSERT INTO Words (singular_nominativ) VALUES (?)", ([singular_nom]))
+    try:
+        cur.execute("INSERT INTO Words (wordnamedb, wordmeaningdb, singular_nominativ, plural_nominativ, singular_genitiv, genitiv_plural, singular_dativ, plural_dativ, singular_akkusativ, akkusativ_plural) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ([wordname, meaningofword, singular_nom, plural_nom, singular_gen, plural_gen, singular_dat, plural_dat, singular_akk, plural_akk]))
+    except:
+        print("Word is already in the database")
     conn.commit()
     conn.close()
-    print(grammar_struct[0][1])
-    print("-----------------------------------------")
     grammar_tokens = [token.lower() for token in grammar_args.split(',')]
 
     # filter out grammar forms which do not match provided keys
