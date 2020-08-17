@@ -16,17 +16,8 @@ from display import (display_grammar, display_compounds, print_tree_of_strings,
                      print_string_or_list, describe_word)
 
 
-conn = sqlite3.connect('words.sqlite')
+conn = sqlite3.connect('Words.sqlite')
 cur = conn.cursor()
-
-# Create the tables
-cur.executescript('''
-DROP TABLE IF EXISTS Words;
-
-CREATE TABLE Words (
-    singular_nominativ   TEXT
-)
-''')
 
 
 def display_word(word, args):
@@ -38,9 +29,6 @@ def display_word(word, args):
         print(word.title)
     elif args.name:
         print(word.name)
-        cur.execute("INSERT INTO Words VALUES ('Katze')")
-        conn.commit()
-        conn.close()
     elif args.article:
         if word.article:
             print(word.article)
