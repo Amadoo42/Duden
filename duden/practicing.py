@@ -1,31 +1,42 @@
 import sqlite3
 
-conn = sqlite3.connect('words.sqlite')
-cur = conn.cursor()
+try:
+    connection = sqlite3.connect('words.sqlite')
+    cur = connection.cursor()
+    print("Connected to SQLite")
 
-# insert data from database into file
-cur.execute("SELECT rowid, singular_nominativ FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, plural_nominativ FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, singular_genitiv FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, genitiv_plural FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, singular_dativ FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, plural_dativ FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, singular_akkusativ FROM Words ORDER BY rowid")
-cur.execute("SELECT rowid, akkusativ_plural FROM Words ORDER BY rowid")
+    sqlite_select_query = '''SELECT * FROM Words'''
+    cur.execute(sqlite_select_query)
+    records = cur.fetchall()
+    #print("Total rows are:  ", len(records))
+    #print("Printing each row")
+    for row in records:
+        #print("Word: ", row[0])
+        #print("Meaning: ", row[1])
+        #print("Singular Nominativ: ", row[2])
+        #print("Plural Nominativ: ", row[3])
+        #print("Singular Genitiv: ",row[4])
+        #print("Plural Genitiv: ", row[5])
+        #print("Singular Daitv: ", row[6])
+        #print("Plural Dativ: ", row[7])
+        #print("Singular Akkusativ: ", row[8])
+        #print("Plural Akkusativ: ", row[9])
+        #print("\n")
+        part = row[0]
+        word = part[0:-5]
+        cur.close()
 
-words = cur.fetchmany(20)
-singular_nom = cur.fetchone()
-plural_nom = cur.fetchone()
-singular_gen = cur.fetchone()
-plural_gen = cur.fetchone()
-singular_dat = cur.fetchone()
-plural_dat = cur.fetchone()
-singular_akk = cur.fetchone()
-plural_akk = cur.fetchone()
+except sqlite3.Error as error:
+        print("Failed to read data from table", error)
+finally:
+    if (connection):
+        connection.close()
+        print("The Sqlite connection is closed")
+
 
 def main():
     # ask the question
-    question = {'singular nominativ of' + words + ' ':singular_nom[1]}
+    question = {'What is the singular nominativ of' + ' ' + word + ' ':row[2], 'What is the plural nominativ of' + ' ' +  word + ' ':row[3], 'What is the singular genitiv of' + ' ' +  word + ' ':row[4], 'What is the plural genitiv of' + ' ' +  word + ' ':row[5], 'What is the singular dativ of' + ' ' +  word + ' ':row[6], 'What is the plural dativ of' + ' ' +  word + ' ':row[7], 'What is the singular akkusativ of' + ' ' +  word + ' ':row[8], 'What is the plural akkusativ of' + ' ' +  word + ' ':row[9]}
     print("*** Quiz ***\n")
     name = input("Please enter your name: ").title()
     print()
@@ -43,4 +54,3 @@ def quiz(question):
     return score
 if __name__ == "__main__":
     main()
-
