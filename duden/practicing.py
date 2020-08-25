@@ -44,14 +44,14 @@ ans_plu_akk = cur.execute("SELECT akkusativ_plural FROM Words WHERE rowid = \"" 
 def main():
     # ask the question
     question = {
-        input(singular_nom),
-        input(plural_nom),
-        input(singular_gen),
-        input(plural_gen),
-        input(singular_dat),
-        input(plural_dat),
-        input(singular_akk),
-        input(plural_akk)
+        singular_nom : ans_sin_nom,
+        plural_nom : ans_plu_nom,
+        singular_gen : ans_sin_gen,
+        plural_gen : ans_plu_gen,
+        singular_dat : ans_sin_dat,
+        plural_dat : ans_plu_dat,
+        singular_akk : ans_sin_akk,
+        plural_akk: ans_plu_akk
     }
     print("*** Quiz ***\n")
     name = input("Please enter your name: ").title()
@@ -61,45 +61,17 @@ def main():
 def quiz(question):
     score = 0
     # determine if answer is correct or not
-    if q.lower() == ans_sin_nom.lower():
+    if ans_sin_nom == ans_sin_nom:
         score += 1
         print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_plu_nom.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Nominative = Correction_Plural_Nominative-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_sin_gen.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Genitiv = Correction_Singular_Genitiv-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_plu_gen.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Genitiv = Correction_Plural_Genitiv-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_sin_dat.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Dativ = Correction_Singular_Dativ-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_plu_dat.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Dativ = Correction_Plural_Dativ-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_sin_akk.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Akkusativ = Correction_Singular_Akkusativ-1 WHERE singular_nominativ = \"''' + a +"\"")
-    if q.lower() == ans_plu_akk.lower():
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Akkusativ = Correction_Plural_Akkusativ-1 WHERE singular_nominativ = \"''' + a +"\"")
-    
+        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative-1 WHERE singular_nominativ = \"''' + word +"\"")
+   
         correction = cur.execute(sqlstring)
         conn.commit()
         conn.close()
     else:
         print("Sorry, correct answer is \"{}\".".format(a))
-        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative+1 WHERE singular_nominativ = \"''' + a +"\"")
+        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative+1 WHERE singular_nominativ = \"''' + word +"\"")
     return score
 if __name__ == "__main__":
     main()
