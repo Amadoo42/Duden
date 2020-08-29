@@ -17,7 +17,6 @@ except sqlite3.Error as error:
         print("Failed to read data from table", error)
 
 row_number = '3'
-lst = list()
 
 #answers
 # select answer column and transform the answer into word for
@@ -53,119 +52,160 @@ def main():
     print("*** Quiz ***\n")
     name = input("Please enter your name: ").title()
     print()
-    # tell you the score
+    # Tell you the score
     print("\nWell done {0}, you scored {1} out of {2}.".format(name, quiz(question), len(question)))
 def quiz(question):
-    # prompt the user for the question and check if answer is correct or not
+    row_number = '3'
+    # Prompt the user for the question and check if answer is correct or not
     score = 0
     singular_nom = list(question)
-    singular_nom_inp = input(singular_nom[0])
-    if singular_nom_inp == nom_sin_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative-1 WHERE singular_nominativ = \"''' + nom_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    sin_nom_ask = cur.execute("SELECT Correction_Singular_Nominative FROM Words WHERE rowid = \"" + row_number +"\"")
+    sin_nom_num = cur.fetchone()
+    if sin_nom_num[0] > 0:
+        singular_nom_inp = input(singular_nom[0])
+        if singular_nom_inp == nom_sin_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative-1 WHERE singular_nominativ = \"''' + nom_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(nom_sin_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative+1 WHERE singular_nominativ = \"''' + nom_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(nom_sin_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Singular_Nominative = Correction_Singular_Nominative+1 WHERE singular_nominativ = \"''' + nom_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
-        
+        pass
+
     plural_nom = list(question)
-    plural_nom_inp = input(plural_nom[1])
-    if plural_nom_inp == nom_plu_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Nominative = Correction_Plural_Nominative-1 WHERE plural_nominativ = \"''' + nom_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    plu_nom_ask = cur.execute("SELECT Correction_Plural_Nominative FROM Words WHERE rowid = \"" + row_number +"\"")
+    plu_nom_num = cur.fetchone()
+    if plu_nom_num[0] > 0:
+        plural_nom_inp = input(plural_nom[1])
+        if plural_nom_inp == nom_plu_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Plural_Nominative = Correction_Plural_Nominative-1 WHERE plural_nominativ = \"''' + nom_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(nom_plu_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Plural_Nominative = Correction_Plural_Nominative+1 WHERE plural_nominativ = \"''' + nom_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(nom_plu_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Plural_Nominative = Correction_Plural_Nominative+1 WHERE plural_nominativ = \"''' + nom_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
     
     singular_gen = list(question)
-    singular_gen_inp = input(singular_gen[2])
-    if singular_gen_inp == gen_sin_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Genitiv = Correction_Singular_Genitiv-1 WHERE singular_genitiv = \"''' + gen_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    sin_gen_ask = cur.execute("SELECT Correction_Singular_Genitiv FROM Words WHERE rowid = \"" + row_number +"\"")
+    sin_gen_num = cur.fetchone()
+    if sin_gen_num[0] > 0:
+        singular_gen_inp = input(singular_gen[2])
+        if singular_gen_inp == gen_sin_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Singular_Genitiv = Correction_Singular_Genitiv-1 WHERE singular_genitiv = \"''' + gen_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(gen_sin_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Singular_Genitiv = Correction_Singular_Genitiv+1 WHERE singular_genitiv = \"''' + gen_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(gen_sin_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Singular_Genitiv = Correction_Singular_Genitiv+1 WHERE singular_genitiv = \"''' + gen_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
 
     plural_gen = list(question)
-    plural_gen_inp = input(plural_gen[3])
-    if plural_gen_inp == gen_plu_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Genitiv = Correction_Plural_Genitiv-1 WHERE genitiv_plural = \"''' + gen_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    plu_gen_ask = cur.execute("SELECT Correction_Plural_Genitiv FROM Words WHERE rowid = \"" + row_number +"\"")
+    plu_gen_num = cur.fetchone()
+    if plu_gen_num[0] > 0:
+        plural_gen_inp = input(plural_gen[3])
+        if plural_gen_inp == gen_plu_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Plural_Genitiv = Correction_Plural_Genitiv-1 WHERE genitiv_plural = \"''' + gen_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(gen_plu_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Plural_Genitiv = Correction_Plural_Genitiv+1 WHERE genitiv_plural = \"''' + gen_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(gen_plu_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Plural_Genitiv = Correction_Plural_Genitiv+1 WHERE genitiv_plural = \"''' + gen_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
 
     singular_dat = list(question)
-    singular_dat_inp = input(singular_dat[4])
-    if singular_dat_inp == dat_sin_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Dativ = Correction_Singular_Dativ-1 WHERE singular_dativ = \"''' + dat_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
-    else:
-        print("Sorry, correct answer is \"{}\".".format(dat_sin_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Singular_Dativ = Correction_Singular_Dativ+1 WHERE singular_dativ = \"''' + dat_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    sin_dat_ask = cur.execute("SELECT Correction_Singular_Dativ FROM Words WHERE rowid = \"" + row_number +"\"")
+    sin_dat_num = cur.fetchone()
+    if sin_dat_num[0] > 0:
+        singular_dat_inp = input(singular_dat[4])
+        if singular_dat_inp == dat_sin_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Singular_Dativ = Correction_Singular_Dativ-1 WHERE singular_dativ = \"''' + dat_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(dat_sin_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Singular_Dativ = Correction_Singular_Dativ+1 WHERE singular_dativ = \"''' + dat_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+    else: 
+        pass
     plural_dat = list(question)
-    plural_dat_inp = input(plural_dat[5])
-    if plural_dat_inp == dat_plu_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Dativ = Correction_Plural_Dativ-1 WHERE plural_dativ = \"''' + dat_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    plu_dat_ask = cur.execute("SELECT Correction_Plural_Dativ FROM Words WHERE rowid = \"" + row_number +"\"")
+    plu_dat_num = cur.fetchone()
+    if plu_dat_num[0] > 0:
+        plural_dat_inp = input(plural_dat[5])
+        if plural_dat_inp == dat_plu_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Plural_Dativ = Correction_Plural_Dativ-1 WHERE plural_dativ = \"''' + dat_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(dat_plu_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Plural_Dativ = Correction_Plural_Dativ+1 WHERE plural_dativ = \"''' + dat_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(dat_plu_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Plural_Dativ = Correction_Plural_Dativ+1 WHERE plural_dativ = \"''' + dat_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
     singular_akk = list(question)
-    singular_akk_inp = input(singular_akk[6])
-    if singular_akk_inp == akk_sin_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Singular_Akkusativ = Correction_Singular_Akkusativ-1 WHERE singular_akkusativ = \"''' + akk_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    sin_akk_ask = cur.execute("SELECT Correction_Singular_Akkusativ FROM Words WHERE rowid = \"" + row_number +"\"")
+    sin_akk_num = cur.fetchone()
+    if sin_akk_num[0] > 0:
+        singular_akk_inp = input(singular_akk[6])
+        if singular_akk_inp == akk_sin_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Singular_Akkusativ = Correction_Singular_Akkusativ-1 WHERE singular_akkusativ = \"''' + akk_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(akk_sin_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Singular_Akkusativ = Correction_Singular_Akkusativ+1 WHERE singular_akkusativ = \"''' + akk_sin_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(akk_sin_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Singular_Akkusativ = Correction_Singular_Akkusativ+1 WHERE singular_akkusativ = \"''' + akk_sin_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
     plural_akk = list(question)
-    plural_akk_inp = input(plural_akk[7])
-    if plural_akk_inp == akk_plu_ans[0]:
-        score += 1
-        print("Correct.")
-        sqlstring=('''UPDATE Words SET Correction_Plural_Akkusativ = Correction_Plural_Akkusativ-1 WHERE akkusativ_plural = \"''' + akk_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+    plu_akk_ask = cur.execute("SELECT Correction_Plural_Akkusativ FROM Words WHERE rowid = \"" + row_number +"\"")
+    plu_akk_num = cur.fetchone()
+    if plu_akk_num[0] > 0:
+        plural_akk_inp = input(plural_akk[7])
+        if plural_akk_inp == akk_plu_ans[0]:
+            score += 1
+            print("Correct.")
+            sqlstring=('''UPDATE Words SET Correction_Plural_Akkusativ = Correction_Plural_Akkusativ-1 WHERE akkusativ_plural = \"''' + akk_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
+        else:
+            print("Sorry, correct answer is \"{}\".".format(akk_plu_ans[0]))
+            sqlstring=('''UPDATE Words SET Correction_Plural_Akkusativ = Correction_Plural_Akkusativ+1 WHERE akkusativ_plural = \"''' + akk_plu_ans[0] +"\"")
+            correction = cur.execute(sqlstring)
+            conn.commit()
     else:
-        print("Sorry, correct answer is \"{}\".".format(akk_plu_ans[0]))
-        sqlstring=('''UPDATE Words SET Correction_Plural_Akkusativ = Correction_Plural_Akkusativ+1 WHERE akkusativ_plural = \"''' + akk_plu_ans[0] +"\"")
-        correction = cur.execute(sqlstring)
-        conn.commit()
+        pass
     conn.close()
     return score
 if __name__ == "__main__":
