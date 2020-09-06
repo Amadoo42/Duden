@@ -12,30 +12,44 @@ try:
         #This is the row in the sql database ('Katze, die', 'Hauskatze', 'die Katze')
         part = row[0]
         word = part[0:-5]
-
 except sqlite3.Error as error:
         print("Failed to read data from table", error)
-
-row_number = '3'
-
-#answers
-# select answer column and transform the answer into word for
-ans_sin_nom = cur.execute("SELECT singular_nominativ FROM Words WHERE rowid = \"" + row_number +"\"")
-nom_sin_ans = cur.fetchone()
-ans_plu_nom = cur.execute("SELECT plural_nominativ FROM Words WHERE rowid = \"" + row_number +"\"")
-nom_plu_ans = cur.fetchone()
-ans_sin_gen = cur.execute("SELECT singular_genitiv FROM Words WHERE rowid = \"" + row_number +"\"")
-gen_sin_ans = cur.fetchone()
-ans_plu_gen = cur.execute("SELECT genitiv_plural FROM Words WHERE rowid = \"" + row_number +"\"")
-gen_plu_ans = cur.fetchone()
-ans_sin_dat = cur.execute("SELECT singular_dativ FROM Words WHERE rowid = \"" + row_number +"\"")
-dat_sin_ans = cur.fetchone()
-ans_plu_dat = cur.execute("SELECT plural_dativ FROM Words WHERE rowid = \"" + row_number +"\"")
-dat_plu_ans = cur.fetchone()
-ans_sin_akk = cur.execute("SELECT singular_akkusativ FROM Words WHERE rowid = \"" + row_number +"\"")
-akk_sin_ans = cur.fetchone()
-ans_plu_akk = cur.execute("SELECT akkusativ_plural FROM Words WHERE rowid = \"" + row_number +"\"")
-akk_plu_ans = cur.fetchone()
+# Answers
+# Prompt the user for the start and end for row
+startrow = int(input('Enter first row: '))
+endrow = int(input('Enter last row: '))
+for i in range(startrow, endrow):
+    ans_sin_nom = cur.execute("SELECT singular_nominativ FROM Words WHERE rowid = \"" + str(i) +"\"")
+    nom_sin_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_plu_nom = cur.execute("SELECT plural_nominativ FROM Words WHERE rowid = \"" + str(i) +"\"")
+    nom_plu_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_sin_gen = cur.execute("SELECT singular_genitiv FROM Words WHERE rowid = \"" + str(i) +"\"")
+    gen_sin_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_plu_gen = cur.execute("SELECT genitiv_plural FROM Words WHERE rowid = \"" + str(i) +"\"")
+    gen_plu_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_sin_dat = cur.execute("SELECT singular_dativ FROM Words WHERE rowid = \"" + str(i) +"\"")
+    dat_sin_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_plu_dat = cur.execute("SELECT plural_dativ FROM Words WHERE rowid = \"" + str(i) +"\"")
+    dat_plu_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_sin_akk = cur.execute("SELECT singular_akkusativ FROM Words WHERE rowid = \"" + str(i) +"\"")
+    akk_sin_ans = cur.fetchone()
+    break
+for i in range(startrow, endrow):
+    ans_plu_akk = cur.execute("SELECT akkusativ_plural FROM Words WHERE rowid = \"" + str(i) +"\"")
+    akk_plu_ans = cur.fetchone()
+    break
 
 def main():
     # ask the question
